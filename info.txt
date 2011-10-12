@@ -1,0 +1,13 @@
+"Gamemode"
+{
+	"name"			"Orikum"
+	"version"		"0.0.1"
+	
+	"author_name"	"Maltera Development Team"
+	"author_email"	""
+	"author_url"	""
+	
+	"icon"			""
+	"info"			"A RTS style Tower Defense gamemode."
+	"hide"			""
+}
