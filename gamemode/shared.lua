@@ -20,3 +20,14 @@ GM.Name 	= "Orikum"
 GM.Author 	= "Maltera Development Team"
 GM.Email 	= "TBD"
 GM.Website 	= "N/A"
+
+orikum = {};
+
+function IncludeSharedFile (path)
+    if SERVER then
+        AddCSLuaFile( path );
+    end
+    include( path );
+end
+
+IncludeSharedFile("camera/camera.lua");
