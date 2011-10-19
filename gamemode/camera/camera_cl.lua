@@ -28,6 +28,8 @@ function GM:InputMouseApply (cmd, x, y, angle)
     return impl:InputMouseApply( cmd, x, y, angle );
 end
 
+--[[
 hook.Add( "InitPostEntity", "Camera", function()
     orikum.camera.current:activate();
 end );
+]]

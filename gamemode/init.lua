@@ -20,3 +20,7 @@ AddCSLuaFile( "shared.lua" )
 AddCSLuaFile( "cl_init.lua" )
 
 include( 'shared.lua' )
+
+-- don't give the player anything
+function GM:PlayerLoadout()
+end

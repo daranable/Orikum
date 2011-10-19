@@ -16,4 +16,16 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -- ---------- END LICENSE NOTICE ----------
 
-include( 'shared.lua' )
+include( 'shared.lua' );
+
+-- don't draw any of the default HUD
+local hud_enable = {
+    CHudHealth          = false,
+    CHudBattery         = false,
+    CHudSuitPower       = false,
+    CHudCrosshair       = false,
+    CHudAmmo            = false,
+    CHudSecondaryAmmo   = false,
+};
+hook.Add( "HUDShouldDraw", "orikum.hud_enable",
+    function (element) return hud_enable[ element ] end );
