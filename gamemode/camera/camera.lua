@@ -18,6 +18,13 @@
 
 orikum.camera = {};
 
+function orikum.camera.resolve (player)
+    return orikum.camera.current;
+end
+
+--IncludeServerFile('camera_sv.lua');
+IncludeClientFile('camera_cl.lua');
+
 function GM:PlayerNoClip (player)
     return true;
 end
@@ -28,11 +35,6 @@ function GM:Move (player, movement)
 end
 
 IncludeSharedFile( "base.lua" );
-IncludeSharedFile( "rts.lua" );
+IncludeSharedFile( "fixed.lua" );
 
-if SERVER then
-    include("camera_sv.lua");
-    AddCSLuaFile("camera_cl.lua");
-else
-    include("camera_cl.lua");
-end
+orikum.camera.current = orikum.camera.fixed:new();

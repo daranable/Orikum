@@ -17,8 +17,9 @@
 -- ---------- END LICENSE NOTICE ----------
 
 local P = {};
-orikum.camera.rts = P;
-setmetatable( P, { __index, orikum.camera.base } );
+orikum.camera.fixed = P;
+setmetatable( P, orikum.camera.base );
+P.__index = P;
 
 -- forces the player to move parallel to the ground
 function P:Move (player, movement)
@@ -26,9 +27,5 @@ function P:Move (player, movement)
     return movement;
 end
 
--- forces the player to look north at a 45 degree downward angle
-function P:InputMouseApply (cmd, x, y, angle)
-    cmd:SetViewAngles( Angle( 45, 0, 0 ) );
-    return true;
-end
-
+--IncludeServerFile('fixed_sv.lua');
+IncludeClientFile('fixed_cl.lua');

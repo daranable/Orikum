@@ -16,6 +16,28 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -- ---------- END LICENSE NOTICE ----------
 
-function orikum.camera.resolve (player)
-    return orikum.camera.rts;
+local P = orikum.camera.fixed;
+
+function P:new (object)
+    object = orikum.camera.base.new( self, object );
+    object.angle = Angle( 45, 0, 0 );
+    return object;
+end
+
+function P:activate()
+    local player = LocalPlayer();
+
+    -- release the mouse
+    gui.EnableScreenClicker( true );
+
+    -- set the initial view angle
+    player:SetEyeAngles( self.angle );
+end
+
+-- If the pointer gets captured somehow this will get called almost
+-- immediately to release it and fix the view angle.
+function P:InputMouseApply (cmd, x, y, angle)
+    gui.EnableScreenClicker( true );
+    cmd:SetViewAngles( self.angle );
+    return true;
 end

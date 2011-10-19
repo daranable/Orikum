@@ -18,6 +18,16 @@
 
 local P = {};
 orikum.camera.base = P;
+P.__index = P;
+
+function P:new (object)
+    object = object or {};
+    setmetatable( object, self );
+    return object;
+end
+
+function P:activate()
+end
 
 function P:Move (player, movement)
 end

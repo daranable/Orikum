@@ -23,6 +23,10 @@ GM.Website 	= "N/A"
 
 orikum = {};
 
+function IncludeServerFile (path)
+    if SERVER then include( path ) end
+end
+
 function IncludeSharedFile (path)
     if SERVER then
         AddCSLuaFile( path );
