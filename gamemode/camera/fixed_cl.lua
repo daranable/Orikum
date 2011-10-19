@@ -20,7 +20,7 @@ local P = orikum.camera.fixed;
 
 function P:new (object)
     object = orikum.camera.base.new( self, object );
-    object.angle = Angle( 45, 0, 0 );
+    object.angle = Angle( 60, 90, 0 );
     return object;
 end
 

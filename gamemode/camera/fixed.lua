@@ -23,7 +23,7 @@ P.__index = P;
 
 -- forces the player to move parallel to the ground
 function P:Move (player, movement)
-    movement:SetMoveAngles( Angle( 0, 0, 0 ) );
+    movement:SetMoveAngles( Angle( 0, 90, 0 ) );
     return movement;
 end
 
