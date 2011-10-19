@@ -32,6 +32,12 @@ function P:activate()
 
     -- set the initial view angle
     player:SetEyeAngles( self.angle );
+
+    --[[
+    hook.Add( "Think", "orikum.camera.fixed", function()
+        self:Think();
+    end );
+    ]]
 end
 
 -- If the pointer gets captured somehow this will get called almost
@@ -41,3 +47,41 @@ function P:InputMouseApply (cmd, x, y, angle)
     cmd:SetViewAngles( self.angle );
     return true;
 end
+
+--[[
+function P:Think()
+    local x, y = gui.MousePos();
+    local xdisp, ydisp = 0, 0;
+    local xmax = surface.ScreenWidth() - 1;
+    local ymax = surface.ScreenHeight() - 1;
+    
+    if y <= 0 then
+        y = 0;
+        ydisp = 10;
+    elseif y >= ymax then
+        y = ymax;
+        ydisp = -10;
+    end
+
+    if x <= 0 then
+        x = 0;
+        xdisp = 10;
+    elseif x >= xmax then
+        x = xmax;
+        xdisp = -10;
+    end
+
+    -- if we don't need to move stop processing now
+    if xdisp == 0 and ydisp == 0 then return end
+  
+    local player = LocalPlayer();
+    local pos = player:GetPos();
+    local disp = Vector( xdisp, ydisp, 0 );
+    
+    print( "pos " .. tostring(pos) .. " disp " .. tostring(disp) );
+    
+    gui.SetMousePos( x + xdisp, y + ydisp );
+    -- we need to set the player's position to pos + disp here
+    -- unfortunately player:SetPos doesn't work from the client
+end
+]]
