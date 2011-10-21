@@ -21,6 +21,11 @@ local P = orikum.camera.fixed;
 function P:new (object)
     object = orikum.camera.base.new( self, object );
     object.angle = Angle( 60, 90, 0 );
+    object.activated = false;
+
+    object.next_forward = 0;
+    object.next_side = 0;
+
     return object;
 end
 
@@ -33,55 +38,53 @@ function P:activate()
     -- set the initial view angle
     player:SetEyeAngles( self.angle );
 
-    --[[
     hook.Add( "Think", "orikum.camera.fixed", function()
         self:Think();
     end );
-    ]]
 end
 
 -- If the pointer gets captured somehow this will get called almost
 -- immediately to release it and fix the view angle.
 function P:InputMouseApply (cmd, x, y, angle)
+    if not self.activated then self:activate() end
     gui.EnableScreenClicker( true );
     cmd:SetViewAngles( self.angle );
     return true;
 end
 
---[[
+function P:CreateMove (cmd)
+    cmd:SetForwardMove( self.next_forward );
+    cmd:SetSideMove( self.next_side );
+    self.next_forward = 0;
+    self.next_side = 0;
+end
+
 function P:Think()
     local x, y = gui.MousePos();
     local xdisp, ydisp = 0, 0;
     local xmax = surface.ScreenWidth() - 1;
     local ymax = surface.ScreenHeight() - 1;
     
-    if y <= 0 then
+    if y <= 3 then
         y = 0;
-        ydisp = 10;
-    elseif y >= ymax then
+        ydisp = 1;
+    elseif y >= ymax - 2 then
         y = ymax;
-        ydisp = -10;
+        ydisp = -1;
     end
 
-    if x <= 0 then
+    if x <= 2 then
         x = 0;
-        xdisp = 10;
-    elseif x >= xmax then
+        xdisp = -1;
+    elseif x >= xmax - 2 then
         x = xmax;
-        xdisp = -10;
+        xdisp = 1;
     end
 
     -- if we don't need to move stop processing now
     if xdisp == 0 and ydisp == 0 then return end
-  
-    local player = LocalPlayer();
-    local pos = player:GetPos();
-    local disp = Vector( xdisp, ydisp, 0 );
     
-    print( "pos " .. tostring(pos) .. " disp " .. tostring(disp) );
-    
-    gui.SetMousePos( x + xdisp, y + ydisp );
-    -- we need to set the player's position to pos + disp here
-    -- unfortunately player:SetPos doesn't work from the client
+    gui.SetMousePos( x, y );
+    self.next_forward = ydisp * 10000;
+    self.next_side    = xdisp * 10000;
 end
-]]

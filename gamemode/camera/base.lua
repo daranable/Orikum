@@ -35,3 +35,5 @@ end
 function P:InputMouseApply (cmd, x, y, angle)
 end
 
+function P:CreateMove (cmd)
+end
