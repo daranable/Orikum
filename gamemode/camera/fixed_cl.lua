@@ -61,30 +61,42 @@ end
 
 function P:Think()
     local x, y = gui.MousePos();
-    local xdisp, ydisp = 0, 0;
+    local xdelta, ydelta, xdir, ydir = 0, 0, 0, 0;
     local xmax = surface.ScreenWidth() - 1;
     local ymax = surface.ScreenHeight() - 1;
     
     if y <= 3 then
-        y = 0;
-        ydisp = 1;
-    elseif y >= ymax - 2 then
-        y = ymax;
-        ydisp = -1;
+        ydelta = 2 - y;
+        y = 2;
+        ydir = 1;
+    elseif y >= ymax - 3 then
+        ydelta = y - ymax + 2;
+        y = ymax - 2;
+        ydir = -1;
     end
 
-    if x <= 2 then
-        x = 0;
-        xdisp = -1;
-    elseif x >= xmax - 2 then
-        x = xmax;
-        xdisp = 1;
+    if x <= 3 then
+        xdelta = 2 - x;
+        x = 2;
+        xdir = -1;
+    elseif x >= xmax - 3 then
+        xdelta = x - xmax + 2;
+        x = xmax - 2;
+        xdir = 1;
     end
 
     -- if we don't need to move stop processing now
-    if xdisp == 0 and ydisp == 0 then return end
+    if xdir == 0 and ydir == 0 then
+        self.speed = 0;
+        return
+    end
     
+    if xdelta > 0 or ydelta > 0 then
+        self.speed = math.min( 10000, self.speed + 50 );
+    end
+
+    self.next_forward = self.next_forward + ydir * self.speed;
+    self.next_side    = self.next_side    + xdir * self.speed;
+
     gui.SetMousePos( x, y );
-    self.next_forward = ydisp * 10000;
-    self.next_side    = xdisp * 10000;
 end
