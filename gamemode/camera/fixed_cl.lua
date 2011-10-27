@@ -21,10 +21,8 @@ local P = orikum.camera.fixed;
 function P:new (object)
     object = orikum.camera.base.new( self, object );
     object.angle = Angle( 60, 90, 0 );
-    object.activated = false;
 
-    object.next_forward = 0;
-    object.next_side = 0;
+    object.speed = 0;
 
     return object;
 end
@@ -37,29 +35,17 @@ function P:activate()
 
     -- set the initial view angle
     player:SetEyeAngles( self.angle );
-
-    hook.Add( "Think", "orikum.camera.fixed", function()
-        self:Think();
-    end );
 end
 
 -- If the pointer gets captured somehow this will get called almost
 -- immediately to release it and fix the view angle.
 function P:InputMouseApply (cmd, x, y, angle)
-    if not self.activated then self:activate() end
     gui.EnableScreenClicker( true );
     cmd:SetViewAngles( self.angle );
     return true;
 end
 
 function P:CreateMove (cmd)
-    cmd:SetForwardMove( self.next_forward );
-    cmd:SetSideMove( self.next_side );
-    self.next_forward = 0;
-    self.next_side = 0;
-end
-
-function P:Think()
     local x, y = gui.MousePos();
     local xdelta, ydelta, xdir, ydir = 0, 0, 0, 0;
     local xmax = surface.ScreenWidth() - 1;
@@ -85,18 +71,18 @@ function P:Think()
         xdir = 1;
     end
 
-    -- if we don't need to move stop processing now
     if xdir == 0 and ydir == 0 then
         self.speed = 0;
-        return
-    end
-    
-    if xdelta > 0 or ydelta > 0 then
-        self.speed = math.min( 10000, self.speed + 50 );
+    else
+        gui.SetMousePos( x, y );
+        
+        if xdelta > 0 or ydelta > 0 then
+            local max = LocalPlayer():GetMaxSpeed();
+            self.speed = math.min( max,
+                self.speed + math.floor( max / 100 ) );
+        end
     end
 
-    self.next_forward = self.next_forward + ydir * self.speed;
-    self.next_side    = self.next_side    + xdir * self.speed;
-
-    gui.SetMousePos( x, y );
+    cmd:SetForwardMove( ydir * self.speed );
+    cmd:SetSideMove( xdir * self.speed );
 end
