@@ -26,6 +26,9 @@ function P:new (object)
     return object;
 end
 
+function P:PlayerSpawn (player)
+end
+
 function P:activate()
 end
 

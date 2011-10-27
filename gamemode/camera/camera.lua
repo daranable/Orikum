@@ -22,7 +22,7 @@ function orikum.camera.resolve (player)
     return orikum.camera.current;
 end
 
---IncludeServerFile('camera_sv.lua');
+IncludeServerFile('camera_sv.lua');
 IncludeClientFile('camera_cl.lua');
 
 function GM:PlayerNoClip (player)

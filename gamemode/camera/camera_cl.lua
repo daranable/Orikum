@@ -16,13 +16,6 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -- ---------- END LICENSE NOTICE ----------
 
---[[
-orikum.camera.current = orikum.camera.rts:new();
-function orikum.camera.resolve (player)
-    return orikum.camera.current;
-end
-]]
-
 function GM:InputMouseApply (cmd, x, y, angle)
     local impl = orikum.camera.current;
     return impl:InputMouseApply( cmd, x, y, angle );

@@ -27,5 +27,5 @@ function P:Move (player, movement)
     return movement;
 end
 
---IncludeServerFile('fixed_sv.lua');
+IncludeServerFile('fixed_sv.lua');
 IncludeClientFile('fixed_cl.lua');

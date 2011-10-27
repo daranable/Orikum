@@ -16,6 +16,8 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -- ---------- END LICENSE NOTICE ----------
 
-function orikum.camera.resolve (player)
-    return orikum.camera.rts;
-end
+hook.Add( "PlayerSpawn", "orikum.camera", function (player)
+    print( "orikum.camera got player spawn" );
+    local impl = orikum.camera.resolve( player );
+    impl:PlayerSpawn( player );
+end );
